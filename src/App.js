@@ -6,7 +6,8 @@ import LoginPage from "./pages/authentication/LoginPage";
 import SignUp from "./pages/authentication/Register";
 import { Home } from "./pages/home/Home";
 import { MainLayout } from "./pages/main layout/MainLayout";
-import { CreateSignature } from "./pages/signature/CreateSignture";
+import { CreateContract } from "./pages/contract/CreateContract";
+import './App.css'
 
 function App() {
   const router = createBrowserRouter([
@@ -28,8 +29,8 @@ function App() {
     // errorElement: <ErrorPage />,
     children: [
       {
-        path: "signature/create",
-        element: <CreateSignature />,
+        path: "contract/create",
+        element: <CreateContract />,
       },
     ],
     }

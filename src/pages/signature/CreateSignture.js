@@ -1,6 +1,0 @@
-export const CreateSignature =() =>  {
-    return (
-        <>
-        </>
-    )
-}
