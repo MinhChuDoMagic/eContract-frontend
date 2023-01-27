@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import AppBar from '../components/AppBar';
 import Toolbar from '../components/Toolbar';
+import { Link as RouterLink } from 'react-router-dom';
 
 const rightLink = {
   fontSize: 16,
@@ -20,7 +21,7 @@ function AppAppBar() {
             variant="h6"
             underline="none"
             color="inherit"
-            href="/premium-themes/onepirate/"
+            component={RouterLink} to="/"
             sx={{ fontSize: 24 }}
           >
             {'e-Contract'}
@@ -30,7 +31,7 @@ function AppAppBar() {
               color="inherit"
               variant="h6"
               underline="none"
-              href="/premium-themes/onepirate/sign-in/"
+              component={RouterLink} to="/login"
               sx={rightLink}
             >
               {'Sign In'}
@@ -38,7 +39,7 @@ function AppAppBar() {
             <Link
               variant="h6"
               underline="none"
-              href="/premium-themes/onepirate/sign-up/"
+              component={RouterLink} to="/register"
               sx={{ ...rightLink, color: 'secondary.main' }}
             >
               {'Sign Up'}
