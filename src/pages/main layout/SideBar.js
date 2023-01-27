@@ -28,7 +28,7 @@ export const SideBar = () => {
       sx={{
         width: "260px",
         height: "100%",
-        backgroundColor: "#ffffff",
+        backgroundColor: "#fffffe",
         position: "fixed",
       }}
     >
