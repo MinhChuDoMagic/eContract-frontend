@@ -14,13 +14,9 @@ import Avatar from "react-avatar";
 import * as React from "react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from '@mui/icons-material/Logout';
-import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/userSlice";
 
 export const Header = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const user = JSON.parse(sessionStorage.getItem('user'));
-  console.log(user)
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -43,7 +39,6 @@ export const Header = () => {
         alignItems: "center",
         justifyContent: "space-between",
         position: "fixed",
-        top: "0",
         zIndex: 1000
       }}
     >

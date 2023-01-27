@@ -6,10 +6,18 @@ import { SideBar } from "./SideBar";
 
 export const MainLayout = () => {
   return (
-    <>
+    <Stack
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <Header />
-      <SideBar />      
+
+      <Stack flex={1} direction="row" sx={{paddingTop:"90px"}}>
+        <SideBar />
         <Box
+          flex={1}
           sx={{
             backgroundColor: color.mainBlue,
             borderTopLeftRadius: 10,
@@ -18,14 +26,11 @@ export const MainLayout = () => {
             paddingX: 2.5,
             paddingY: 2.5,
             marginLeft: "260px",
-            marginTop:"90px",
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
           }}
         >
           <Outlet />
         </Box>
-    </>
+      </Stack>
+    </Stack>
   );
 };

@@ -14,14 +14,10 @@ import Container from "@mui/material/Container";
 import { Snackbar, Alert } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/userSlice";
 
 const theme = createTheme();
 
 export default function SignUp() {
-  const user = useSelector(selectUser)
-  console.log(user)
   let navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const [res, setRes] = React.useState({
