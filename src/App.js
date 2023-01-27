@@ -6,6 +6,7 @@ import { MainLayout } from "./pages/main layout/MainLayout";
 import { CreateContract } from "./pages/contract/CreateContract";
 import "./App.css";
 import { ContractHome } from "./pages/contract home/ContractHome";
+import { AddFieldContract } from "./pages/contract/AddFieldcontract";
 
 function App() {
   const router = createBrowserRouter([
@@ -20,6 +21,10 @@ function App() {
     {
       path: "/register",
       element: <SignUp />,
+    },
+    {
+      path: "/add_field_contract",
+      element: <AddFieldContract />,
     },
     {
       path: "/v1",

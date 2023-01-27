@@ -9,13 +9,32 @@ import {
   Tooltip,
   ListItemText,
   ListItemIcon,
+  Autocomplete,
 } from "@mui/material";
 import color from "../../constants/color";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { FaRegClosedCaptioning, FaEye, FaFileSignature } from "react-icons/fa";
+import { useState } from "react";
 
 export const CreateSignInfo = () => {
+  const [selectedValue, setSelectedValue] = useState("");
+  const [emailSuggestion, setEmailSuggestion] = useState([]);
 
+  const handleSuggestChange = (keyword) =>{
+    console.log(keyword);
+    fetch(`http://localhost:8080/api/auth/search?key=${keyword}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    }).then((response) => response.json())
+    .then((response) => {
+      const labeledEmails = response.map(email => ({ label: email }));
+      console.log(labeledEmails);
+      setEmailSuggestion(labeledEmails)
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
 
   return (
     <Box
@@ -62,26 +81,74 @@ export const CreateSignInfo = () => {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               label="Role"
-            //   value="Need to Sign"
-              sx={{display:  "flex", flexDirection:"row"}}
+              value={selectedValue}
+              onChange={(event) => setSelectedValue(event.target.value)}
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
             >
-              <MenuItem  value="Need to Sign" >
-                <ListItemIcon>
-                  <FaFileSignature />
-                </ListItemIcon>
-                <ListItemText>Need to Sign</ListItemText>
+              <MenuItem
+                value="1"
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexDirection: "row",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "row",
+                  }}
+                >
+                  <ListItemIcon>
+                    <FaFileSignature />
+                  </ListItemIcon>
+                  <ListItemText sx={{ width: "50%", marginLeft: "-10px" }}>
+                    Need to Sign
+                  </ListItemText>
+                </Box>
               </MenuItem>
-              <MenuItem value="Receives a Copy">
-                <ListItemIcon>
-                  <FaRegClosedCaptioning />
-                </ListItemIcon>
-                <ListItemText>Receives a Copy</ListItemText>
+              <MenuItem
+                value="2"
+                sx={{ display: "flex", alignItems: "center" }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "row",
+                  }}
+                >
+                  <ListItemIcon>
+                    <FaRegClosedCaptioning />
+                  </ListItemIcon>
+                  <ListItemText sx={{ width: "50%", marginLeft: "-10px" }}>
+                    Receives a Copy
+                  </ListItemText>
+                </Box>
               </MenuItem>
-              <MenuItem  value="Needs to View">
-                <ListItemIcon>
-                  <FaEye />
-                </ListItemIcon>
-                <ListItemText>Needs to View</ListItemText>
+              <MenuItem
+                value="3"
+                sx={{ display: "flex", alignItems: "center" }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "row",
+                  }}
+                >
+                  <ListItemIcon>
+                    <FaEye />
+                  </ListItemIcon>
+                  <ListItemText sx={{ width: "50%", marginLeft: "-10px" }}>
+                    Needs to View
+                  </ListItemText>
+                </Box>
               </MenuItem>
             </Select>
           </FormControl>
@@ -95,12 +162,23 @@ export const CreateSignInfo = () => {
             paddingBottom: "10px",
           }}
         >
-          <TextField
-            label="Email"
-            variant="outlined"
-            fullWidth
-            required
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
             sx={{ marginRight: "40px", display: "flex", flex: 1 }}
+            options={emailSuggestion}
+            forcePopupIcon={false}
+            noOptionsText="Can not find email"
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Email"
+                variant="outlined"
+                fullWidth
+                required
+                onChange={e => handleSuggestChange(e.target.value)}
+              />
+            )}
           />
 
           <Box sx={{ display: "flex", flex: 1 }} />
