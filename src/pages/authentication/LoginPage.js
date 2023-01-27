@@ -12,10 +12,15 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser, selectUser } from "../../redux/userSlice";
 
 const theme = createTheme();
 
 export default function LoginPage() {
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -31,13 +36,13 @@ export default function LoginPage() {
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log("Bearer " + response["token"]);
-        localStorage.setItem("token", "Bearer " + response["token"]);
+        sessionStorage.setItem('user', JSON.stringify(response));   
+        console.log(response);   
       })
       .catch((error) => {
         console.error(error);
-      });
-
+      });     
+        console.log(user);
   };
 
   return (

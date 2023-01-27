@@ -28,6 +28,8 @@ export const SideBar = () => {
         height: "100%",
         backgroundColor: "#ffffff",
         position: "fixed",
+        paddingTop: "90px",
+        top: "0",
       }}
     >
       <List
