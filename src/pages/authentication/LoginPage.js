@@ -12,10 +12,12 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -31,8 +33,8 @@ export default function LoginPage() {
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log("Bearer " + response["token"]);
-        localStorage.setItem("token", "Bearer " + response["token"]);
+        sessionStorage.setItem("user", JSON.stringify(response));
+        navigate("/v1/home");
       })
       .catch((error) => {
         console.error(error);

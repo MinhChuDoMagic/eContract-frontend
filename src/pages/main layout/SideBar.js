@@ -13,12 +13,14 @@ import ErrorIcon from "@mui/icons-material/Error";
 import QueryBuilderIcon from "@mui/icons-material/QueryBuilder";
 import CheckIcon from "@mui/icons-material/Check";
 import NoteAddIcon from "@mui/icons-material/NoteAdd";
+import { Link } from "react-router-dom";
+import HomeIcon from '@mui/icons-material/Home';
 
 export const SideBar = () => {
-  const [open, setOpen] = React.useState(true);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-  const handleClick = () => {
-    setOpen(!open);
+  const handleListItemClick = (event, index) => {
+    setSelectedIndex(index);
   };
 
   return (
@@ -40,8 +42,30 @@ export const SideBar = () => {
         aria-labelledby="nested-list-subheader"
       >
         <>
+          <ListSubheader>General</ListSubheader>
+          <ListItemButton
+            sx={{ borderRadius: "10px" }}
+            component={Link}
+            to="home"
+            selected={selectedIndex === 0}
+            onClick={(event) => handleListItemClick(event, 0)}
+          >
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItemButton>
+        </>
+
+        <>
           <ListSubheader>CONTRACT</ListSubheader>
-          <ListItemButton sx={{ borderRadius: "10px" }}>
+          <ListItemButton
+            sx={{ borderRadius: "10px" }}
+            component={Link}
+            to="contract/create"
+            selected={selectedIndex === 1}
+            onClick={(event) => handleListItemClick(event, 1)}
+          >
             <ListItemIcon>
               <NoteAddIcon />
             </ListItemIcon>
@@ -51,14 +75,26 @@ export const SideBar = () => {
 
         <>
           <ListSubheader>ENVELOPES</ListSubheader>
-          <ListItemButton sx={{ borderRadius: "10px" }}>
+          <ListItemButton
+            sx={{ borderRadius: "10px" }}
+            component={Link}
+            to="inbox"
+            selected={selectedIndex === 2}
+            onClick={(event) => handleListItemClick(event, 2)}
+          >
             <ListItemIcon>
               <InboxIcon />
             </ListItemIcon>
             <ListItemText primary="Inbox" />
           </ListItemButton>
 
-          <ListItemButton sx={{ borderRadius: "10px" }}>
+          <ListItemButton
+            sx={{ borderRadius: "10px" }}
+            component={Link}
+            to="sent"
+            selected={selectedIndex === 3}
+            onClick={(event) => handleListItemClick(event, 3)}
+          >
             <ListItemIcon>
               <SendIcon />
             </ListItemIcon>
@@ -68,21 +104,39 @@ export const SideBar = () => {
 
         <>
           <ListSubheader>QUICK VIEWS</ListSubheader>
-          <ListItemButton sx={{ borderRadius: "10px" }}>
+          <ListItemButton
+            sx={{ borderRadius: "10px" }}
+            component={Link}
+            to="action_required"
+            selected={selectedIndex === 4}
+            onClick={(event) => handleListItemClick(event, 4)}
+          >
             <ListItemIcon>
               <ErrorIcon />
             </ListItemIcon>
             <ListItemText primary="Action required" />
           </ListItemButton>
 
-          <ListItemButton sx={{ borderRadius: "10px" }}>
+          <ListItemButton
+            sx={{ borderRadius: "10px" }}
+            component={Link}
+            to="waiting"
+            selected={selectedIndex === 5}
+            onClick={(event) => handleListItemClick(event, 5)}
+          >
             <ListItemIcon>
               <QueryBuilderIcon />
             </ListItemIcon>
             <ListItemText primary="Waiting for Others" />
           </ListItemButton>
 
-          <ListItemButton sx={{ borderRadius: "10px" }}>
+          <ListItemButton
+            sx={{ borderRadius: "10px" }}
+            component={Link}
+            to="completed"
+            selected={selectedIndex === 6}
+            onClick={(event) => handleListItemClick(event, 6)}
+          >
             <ListItemIcon>
               <CheckIcon />
             </ListItemIcon>

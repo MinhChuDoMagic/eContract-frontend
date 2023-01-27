@@ -39,6 +39,7 @@ export const Header = () => {
         alignItems: "center",
         justifyContent: "space-between",
         position: "fixed",
+        top:0,
         zIndex: 1000
       }}
     >
