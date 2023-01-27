@@ -11,6 +11,7 @@
     "@mui/material": "^5.8.6",
     "@mui/system": "^5.8.6",
     "@mui/utils": "^5.8.6",
+    "@pdftron/webviewer": "^8.11.0",
     "@tabler/icons": "^1.72.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
