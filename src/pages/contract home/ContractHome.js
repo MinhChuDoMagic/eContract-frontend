@@ -1,7 +1,11 @@
 import { Box } from "@mui/material"
+import { useSelector } from "react-redux";
 import color from "../../constants/color";
+import { selectUser } from "../../redux/userSlice";
 
 export const ContractHome = () => {
+    const user = useSelector(selectUser)
+    console.log(user);
     return(
         <Box sx={{
             bgcolor: color.White,

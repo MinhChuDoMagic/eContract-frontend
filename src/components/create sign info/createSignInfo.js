@@ -16,25 +16,39 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { FaRegClosedCaptioning, FaEye, FaFileSignature } from "react-icons/fa";
 import { useState } from "react";
 
-export const CreateSignInfo = () => {
+export const CreateSignInfo = ({ userId, userState, setUserState,  onDelete }) => {
   const [selectedValue, setSelectedValue] = useState("");
   const [emailSuggestion, setEmailSuggestion] = useState([]);
 
-  const handleSuggestChange = (keyword) =>{
-    console.log(keyword);
+  const handleSuggestChange = (keyword) => {
+    
+    userState[userId].email = keyword;
+    setUserState(userState);
     fetch(`http://localhost:8080/api/auth/search?key=${keyword}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-    }).then((response) => response.json())
-    .then((response) => {
-      const labeledEmails = response.map(email => ({ label: email }));
-      console.log(labeledEmails);
-      setEmailSuggestion(labeledEmails)
     })
-    .catch((error) => {
-      console.error(error);
-    });
-  }
+      .then((response) => response.json())
+      .then((response) => {
+        const labeledEmails = response.map((email) => ({ label: email }));
+        
+        setEmailSuggestion(labeledEmails);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const handleNameChange = (name) => {
+    userState[userId].name = name;
+    setUserState(userState);
+  };
+
+  const handleRoleChange = (role) => {
+    setSelectedValue(role);
+    userState[userId].role = role;
+    setUserState(userState);
+  };
 
   return (
     <Box
@@ -73,6 +87,7 @@ export const CreateSignInfo = () => {
             fullWidth
             required
             sx={{ marginRight: "40px" }}
+            onChange={(event) => handleNameChange(event.target.value)}
           />
 
           <FormControl fullWidth>
@@ -82,7 +97,7 @@ export const CreateSignInfo = () => {
               id="demo-simple-select"
               label="Role"
               value={selectedValue}
-              onChange={(event) => setSelectedValue(event.target.value)}
+              onChange={(event) => handleRoleChange(event.target.value)}
               sx={{
                 display: "flex",
                 flexDirection: "row",
@@ -169,6 +184,10 @@ export const CreateSignInfo = () => {
             options={emailSuggestion}
             forcePopupIcon={false}
             noOptionsText="Can not find email"
+            onChange={(event, newValue) => {
+              userState[userId].email = newValue.label;
+              setUserState(userState);
+            }}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -176,7 +195,7 @@ export const CreateSignInfo = () => {
                 variant="outlined"
                 fullWidth
                 required
-                onChange={e => handleSuggestChange(e.target.value)}
+                onChange={(e) => handleSuggestChange(e.target.value)}
               />
             )}
           />
@@ -186,7 +205,7 @@ export const CreateSignInfo = () => {
       </Box>
 
       <Tooltip title="Delete">
-        <IconButton
+        <IconButton  onClick={onDelete}
           sx={{
             height: "100%",
             width: "60px",

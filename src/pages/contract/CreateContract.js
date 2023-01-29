@@ -12,18 +12,50 @@ import { CreateSignInfo } from "../../components/create sign info/createSignInfo
 import DropFileInput from "../../components/drag drop file/DropFileInput";
 import color from "../../constants/color";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import { useNavigate } from "react-router-dom";
 
 export const CreateContract = () => {
+  const navigate = useNavigate();
   const onFileChange = (files) => {
-    console.log(files);
+    setFile(files)
   };
 
+  const [file, setFile] = useState(null)
+  const [message, setMessage] = useState("")
+  const [countNumb, setCountNumb] = useState(1)
   const [onlySigner, setOnlySigner] = useState(false);
-  const [components, setComponents] = useState([<div key={0}><CreateSignInfo/></div>]);
+  // const [components, setComponents] = useState([<div key={0}><CreateSignInfo userId={0} /></div>]);
+  const [components, setComponents] = useState([
+    { id: 0, name: "", email: "", role: 0 },
+  ]);
 
   const handleAddButtonClick = () => {
-    setComponents([...components, <div key={components.length}><CreateSignInfo/></div>]);
-  }
+    setCountNumb(countNumb+1)
+    setComponents([
+      ...components,
+      { id: countNumb, name: "", email: "", role: 0 },
+    ]);
+  };
+
+  const handleDeleteRecipient = (index) => {
+    setComponents(components.filter((user, i) => i !== index));
+  };
+
+  const handelNext = () => {
+    console.log(file);
+    console.log(components);
+    console.log(typeof(message))
+
+    const recipients =components.map(user => {
+      const { id, ...rest } = user;
+      return rest;
+    });
+
+    sessionStorage.setItem("contractFile", JSON.stringify(file));
+    sessionStorage.setItem("recipients", JSON.stringify(recipients));
+    sessionStorage.setItem("contractMessage", message);
+    navigate("/add_field_contract");
+  };
   return (
     <Box
       sx={{
@@ -78,8 +110,21 @@ export const CreateContract = () => {
 
         {!onlySigner && (
           <>
-            {components}
-            <Button variant="outlined" startIcon={<PersonAddIcon />} onClick={handleAddButtonClick}>
+            {components.map((comp, index) => (
+              <div key={comp.id}>
+                <CreateSignInfo
+                  userId={index}
+                  userState={components}
+                  setUserState={setComponents}
+                  onDelete={() => handleDeleteRecipient(index)}
+                />
+              </div>
+            ))}
+            <Button
+              variant="outlined"
+              startIcon={<PersonAddIcon />}
+              onClick={handleAddButtonClick}
+            >
               ADD RECIPIENT
             </Button>
           </>
@@ -107,6 +152,7 @@ export const CreateContract = () => {
           multiline
           fullWidth
           rows={8}
+          onChange={(e)  => setMessage(e.target.value)}
         />
         <Divider sx={{ paddingTop: "60px" }} />
       </Box>
@@ -114,7 +160,11 @@ export const CreateContract = () => {
       <Box
         sx={{ paddingTop: "40px", display: "flex", justifyContent: "flex-end" }}
       >
-        <Button variant="contained" sx={{ paddingX: "30px" }}>
+        <Button
+          onClick={handelNext}
+          variant="contained"
+          sx={{ paddingX: "30px" }}
+        >
           Next
         </Button>
       </Box>
