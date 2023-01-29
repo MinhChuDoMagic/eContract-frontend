@@ -16,6 +16,12 @@ export const AddFieldContract = () => {
   const [user, setUser] = useState("");
   const viewer = useRef(null);
 
+  const contract = JSON.parse(sessionStorage.getItem("contractFile"));
+  const recipients= JSON.parse(sessionStorage.getItem("recipients"));
+  const message = sessionStorage.getItem("message")
+
+  console.log(contract, message, recipients);
+
   const handleChange = (event) => {
     setUser(event.target.value);
   };
@@ -45,7 +51,6 @@ export const AddFieldContract = () => {
         width: "100vw",
         display: "flex",
         flexDirection: "row",
-        bgcolor: "#909",
       }}
     >
       <Box sx={{display:'flex', flexDirection: "column", height: "100%", width: "260px", bgcolor: "#fff", justifyContent:"space-between" }}>
