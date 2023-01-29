@@ -13,9 +13,12 @@ import DropFileInput from "../../components/drag drop file/DropFileInput";
 import color from "../../constants/color";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setContract } from "../../redux/cotractSlice";
 
 export const CreateContract = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const onFileChange = (files) => {
     setFile(files)
   };
@@ -42,18 +45,16 @@ export const CreateContract = () => {
   };
 
   const handelNext = () => {
-    console.log(file);
-    console.log(components);
-    console.log(typeof(message))
+    // console.log(file);
+    // console.log(components);
+    // console.log(typeof(message))
 
     const recipients =components.map(user => {
       const { id, ...rest } = user;
       return rest;
     });
 
-    sessionStorage.setItem("contractFile", JSON.stringify(file));
-    sessionStorage.setItem("recipients", JSON.stringify(recipients));
-    sessionStorage.setItem("contractMessage", message);
+    dispatch(setContract({file: file, recipients: recipients, message: message}))
     navigate("/add_field_contract");
   };
   return (

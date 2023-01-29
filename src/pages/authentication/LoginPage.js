@@ -21,7 +21,6 @@ const theme = createTheme();
 export default function LoginPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch()
-  const user = useSelector(selectUser)
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -38,10 +37,8 @@ export default function LoginPage() {
       .then((response) => response.json())
       .then((response) => {
         dispatch(setUser(response))
-        
-        // navigate("/v1/home");
       })
-      .then((response) => {
+      .then(() => {
         navigate("/v1/home");
       })
       .catch((error) => {
