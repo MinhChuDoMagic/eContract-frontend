@@ -7,6 +7,8 @@ import { CreateContract } from "./pages/contract/CreateContract";
 import "./App.css";
 import { ContractHome } from "./pages/contract home/ContractHome";
 import { AddFieldContract } from "./pages/contract/AddFieldcontract";
+import { Envelope } from "./pages/envelopes/envelope";
+import { ContractDetail } from "./pages/contract/ContractDetail";
 
 function App() {
   const router = createBrowserRouter([
@@ -40,6 +42,14 @@ function App() {
           path: "contract/create",
           element: <CreateContract />,
         },
+        {
+          path: "inbox",
+          element: <Envelope type={"inbox"} />,
+        },
+        {
+          path: "contract/detail/:contractId",
+          element: <ContractDetail/>
+        }
       ],
     },
   ]);
