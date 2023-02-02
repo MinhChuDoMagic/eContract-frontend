@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 import HomeIcon from '@mui/icons-material/Home';
 
 export const SideBar = () => {
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [selectedIndex, setSelectedIndex] = React.useState(2);
 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);

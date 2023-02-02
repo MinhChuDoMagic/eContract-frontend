@@ -13,14 +13,21 @@ import color from "../../constants/color";
 import ErrorIcon from "@mui/icons-material/Error";
 import QueryBuilderIcon from "@mui/icons-material/QueryBuilder";
 import CheckIcon from "@mui/icons-material/Check";
+import { useNavigate } from "react-router-dom";
 
 export const Envelope = ({ type }) => {
   function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
   }
+  const navigate = useNavigate()
+
+  const handleListItemClick = (id) => {
+    navigate(`/v1/contract/detail/${id}`)
+  }
 
   const rows = [
     {
+      id: "123456",
       docName: "Template",
       to: ["Chu Minh", "Minh Chu"],
       state: 0,
@@ -31,6 +38,7 @@ export const Envelope = ({ type }) => {
     },
 
     {
+      id: "123456",
       docName: "Template",
       to: ["Chu Minh", "Minh Chu"],
       state: 1,
@@ -41,6 +49,7 @@ export const Envelope = ({ type }) => {
     },
 
     {
+      id: "123456",
       docName: "Template",
       to: ["Chu Minh"],
       state: 2,
@@ -91,6 +100,7 @@ export const Envelope = ({ type }) => {
             {rows.map((row, index) => (
               <TableRow
                 key={index}
+                onClick={() => handleListItemClick(row.id)}
                 sx={{
                   borderLeft: "3px solid #2361CC",
                   "&:last-child td, &:last-child th": { border: 0 },

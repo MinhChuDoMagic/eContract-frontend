@@ -105,7 +105,7 @@ export const CreateSignInfo = ({ userId, userState, setUserState,  onDelete }) =
               }}
             >
               <MenuItem
-                value="1"
+                value={1}
                 sx={{
                   display: "flex",
                   alignItems: "center",
@@ -128,7 +128,7 @@ export const CreateSignInfo = ({ userId, userState, setUserState,  onDelete }) =
                 </Box>
               </MenuItem>
               <MenuItem
-                value="2"
+                value={2}
                 sx={{ display: "flex", alignItems: "center" }}
               >
                 <Box
@@ -147,7 +147,7 @@ export const CreateSignInfo = ({ userId, userState, setUserState,  onDelete }) =
                 </Box>
               </MenuItem>
               <MenuItem
-                value="3"
+                value={3}
                 sx={{ display: "flex", alignItems: "center" }}
               >
                 <Box

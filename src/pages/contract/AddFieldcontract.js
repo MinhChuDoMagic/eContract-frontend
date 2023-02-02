@@ -14,9 +14,10 @@ import WebViewer from "@pdftron/webviewer";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { resetContract, selectContract } from "../../redux/cotractSlice";
+import { selectUser } from "../../redux/userSlice";
 
 export const AddFieldContract = () => {
-  const dispatch =  useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [user, setUser] = useState(0);
   const viewer = useRef(null);
@@ -25,16 +26,14 @@ export const AddFieldContract = () => {
 
   const contract = useSelector(selectContract);
   const recipients = contract.recipients;
-  const message = contract.message;
 
-  // const signer = recipients.filter(obj => obj.role === 0);
-  const signer = [
-    { email: "email1@example.com", name: "Name 1", role: 0 },
-    { email: "email3@example.com", name: "Name 3", role: 0 },
-    { email: "email5@example.com", name: "Name 5", role: 0 },
-    { email: "email7@example.com", name: "Name 7", role: 0 },
-  ];
+  const signer = recipients.filter((obj) => obj.role === 1);
+  // const signer = [
+  //   { email: "email1@example.com", name: "Minh Chu", role: 0 },
+  //   { email: "email3@example.com", name: "Minh Chu", role: 0 },
+  // ];
   const file = contract.file;
+  const mainUser = useSelector(selectUser);
 
   const handleChange = (event) => {
     setUser(event.target.value);
@@ -154,31 +153,30 @@ export const AddFieldContract = () => {
         let inputAnnot;
         let field;
 
-        if (typeof annot.custom !== 'undefined') {
+        if (typeof annot.custom !== "undefined") {
           // create a form field based on the type of annotation
-          if (annot.custom.type === 'TEXT') {
+          if (annot.custom.type === "TEXT") {
             field = new Annotations.Forms.Field(
               annot.getContents() + Date.now() + index,
               {
-                type: 'Tx',
+                type: "Tx",
                 value: annot.custom.value,
-              },
+              }
             );
             inputAnnot = new Annotations.TextWidgetAnnotation(field);
-          } else if (annot.custom.type === 'SIGNATURE') {
+          } else if (annot.custom.type === "SIGNATURE") {
             field = new Annotations.Forms.Field(
               annot.getContents() + Date.now() + index,
               {
-                type: 'Sig',
-              },
+                type: "Sig",
+              }
             );
             inputAnnot = new Annotations.SignatureWidgetAnnotation(field, {
-              appearance: '_DEFAULT',
+              appearance: "_DEFAULT",
               appearances: {
                 _DEFAULT: {
                   Normal: {
-                    data:
-                      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjEuMWMqnEsAAAANSURBVBhXY/j//z8DAAj8Av6IXwbgAAAAAElFTkSuQmCC',
+                    data: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjEuMWMqnEsAAAANSURBVBhXY/j//z8DAAj8Av6IXwbgAAAAAElFTkSuQmCC",
                     offset: {
                       x: 100,
                       y: 100,
@@ -187,17 +185,17 @@ export const AddFieldContract = () => {
                 },
               },
             });
-          } else if (annot.custom.type === 'DATE') {
+          } else if (annot.custom.type === "DATE") {
             field = new Annotations.Forms.Field(
               annot.getContents() + Date.now() + index,
               {
-                type: 'Tx',
-                value: 'm-d-yyyy',
+                type: "Tx",
+                value: "m-d-yyyy",
                 // Actions need to be added for DatePickerWidgetAnnotation to recognize this field.
                 actions: {
                   F: [
                     {
-                      name: 'JavaScript',
+                      name: "JavaScript",
                       // You can customize the date format here between the two double-quotation marks
                       // or leave this blank to use the default format
                       javascript: 'AFDate_FormatEx("mmm d, yyyy");',
@@ -205,16 +203,16 @@ export const AddFieldContract = () => {
                   ],
                   K: [
                     {
-                      name: 'JavaScript',
+                      name: "JavaScript",
                       // You can customize the date format here between the two double-quotation marks
                       // or leave this blank to use the default format
                       javascript: 'AFDate_FormatEx("mmm d, yyyy");',
                     },
                   ],
                 },
-              },
+              }
             );
-  
+
             inputAnnot = new Annotations.DatePickerWidgetAnnotation(field);
           } else {
             // exit early for other annotations
@@ -246,7 +244,7 @@ export const AddFieldContract = () => {
         Annotations.WidgetAnnotation.getCustomStyles = function (widget) {
           if (widget instanceof Annotations.SignatureWidgetAnnotation) {
             return {
-              border: '1px solid #a5c7ff',
+              border: "1px solid #a5c7ff",
             };
           }
         };
@@ -256,7 +254,7 @@ export const AddFieldContract = () => {
         annotationManager.addAnnotation(inputAnnot);
         fieldManager.addField(field);
         annotsToDraw.push(inputAnnot);
-      }),
+      })
     );
 
     // delete old annotations
@@ -274,10 +272,37 @@ export const AddFieldContract = () => {
     // const docRef = storageRef.child(referenceString);
     const { docViewer, annotManager } = instance;
     const doc = docViewer.getDocument();
-    const xfdfString = await annotManager.exportAnnotations({ widgets: true, fields: true });
+    const xfdfString = await annotManager.exportAnnotations({
+      widgets: true,
+      fields: true,
+    });
     const data = await doc.getFileData({ xfdfString });
     const arr = new Uint8Array(data);
-    const file = new File([arr], 'hello.pdf' , { type: 'application/pdf' });
+    const newFile = new File([arr], file.name, { type: "application/pdf" });
+    const newContract = {
+      name: file.name,
+      file: newFile,
+      recipients: JSON.stringify(recipients),
+      message: contract.message,
+    };
+
+    console.log(JSON.stringify(recipients));
+
+    const formData = new FormData();
+    formData.append("Name", newContract.name);
+    formData.append("File", newContract.file);
+    formData.append("Recipients", newContract.recipients);
+    formData.append("Message", newContract.message);
+    console.log(formData);
+    console.log(newContract.recipients);
+
+    fetch("http://localhost:8080/api/contract", {
+      method: "POST",
+      body: formData,
+      headers: {
+        "Authorization": "Bearer " + mainUser.token,
+      },
+    });
     // docRef.put(blob).then(function (snapshot) {
     //   console.log('Uploaded the blob');
     // });
@@ -288,7 +313,7 @@ export const AddFieldContract = () => {
     // });
     // await addDocumentToSign(uid, email, referenceString, emails);
     dispatch(resetContract());
-    navigate('/');
+    // navigate("/v1/inbox");
   };
 
   return (
@@ -310,7 +335,7 @@ export const AddFieldContract = () => {
           justifyContent: "space-between",
         }}
       >
-        <Box sx={{ paddingX: "10px", paddingTop: "10px" }}>
+        <Box sx={{ paddingX: "10px", paddingTop: "20px" }}>
           <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold" }}>
             Prepare Document
           </Typography>
@@ -319,7 +344,7 @@ export const AddFieldContract = () => {
             Adding signature for
           </Typography>
 
-          <FormControl fullWidth>
+          <FormControl sx={{ marginTop: "15px" }} fullWidth>
             <InputLabel id="demo-simple-select-label">Recipient</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -336,16 +361,14 @@ export const AddFieldContract = () => {
             </Select>
           </FormControl>
 
-         
-            <Button
-              variant="contained"
-              endIcon={<DriveFileRenameOutlineIcon />}
-              sx={{ marginTop: "10px" }}
-              onClick={() => addField("SIGNATURE")}
-            >
-              Add signature
-            </Button>
-         
+          <Button
+            variant="contained"
+            endIcon={<DriveFileRenameOutlineIcon />}
+            sx={{ marginTop: "10px" }}
+            onClick={() => addField("SIGNATURE")}
+          >
+            Add signature
+          </Button>
         </Box>
 
         <Button
