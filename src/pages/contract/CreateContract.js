@@ -13,19 +13,22 @@ import DropFileInput from "../../components/drag drop file/DropFileInput";
 import color from "../../constants/color";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setContract } from "../../redux/cotractSlice";
+import { selectUser } from "../../redux/userSlice";
 
 export const CreateContract = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const onFileChange = (files) => {
-    setFile(files)
+    setFile(files);
   };
 
-  const [file, setFile] = useState(null)
-  const [message, setMessage] = useState("")
-  const [countNumb, setCountNumb] = useState(1)
+  const mainUser = useSelector(selectUser);
+
+  const [file, setFile] = useState(null);
+  const [message, setMessage] = useState("");
+  const [countNumb, setCountNumb] = useState(1);
   const [onlySigner, setOnlySigner] = useState(false);
   // const [components, setComponents] = useState([<div key={0}><CreateSignInfo userId={0} /></div>]);
   const [components, setComponents] = useState([
@@ -33,7 +36,7 @@ export const CreateContract = () => {
   ]);
 
   const handleAddButtonClick = () => {
-    setCountNumb(countNumb+1)
+    setCountNumb(countNumb + 1);
     setComponents([
       ...components,
       { id: countNumb, name: "", email: "", role: 0 },
@@ -49,12 +52,20 @@ export const CreateContract = () => {
     // console.log(components);
     // console.log(typeof(message))
 
-    const recipients =components.map(user => {
-      const { id, ...rest } = user;
-      return rest;
-    });
+    let recipients = null;
 
-    dispatch(setContract({file: file, recipients: recipients, message: message}))
+    if (onlySigner) {
+      recipients = [{ name: mainUser.name, email: mainUser.email, role: 0 }];
+    } else {
+      recipients = components.map((user) => {
+        const { id, ...rest } = user;
+        return rest;
+      });
+    }
+
+    dispatch(
+      setContract({ file: file, recipients: recipients, message: message })
+    );
     navigate("/add_field_contract");
   };
   return (
@@ -153,7 +164,7 @@ export const CreateContract = () => {
           multiline
           fullWidth
           rows={8}
-          onChange={(e)  => setMessage(e.target.value)}
+          onChange={(e) => setMessage(e.target.value)}
         />
         <Divider sx={{ paddingTop: "60px" }} />
       </Box>

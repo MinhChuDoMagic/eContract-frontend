@@ -39,7 +39,7 @@ export default function LoginPage() {
         dispatch(setUser(response))
       })
       .then(() => {
-        navigate("/v1/home");
+        navigate("/v1/inbox");
       })
       .catch((error) => {
         console.error(error);
