@@ -14,6 +14,9 @@ import Avatar from "react-avatar";
 import * as React from "react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser, setUser } from "../../redux/userSlice";
+import { useNavigate } from "react-router-dom";
 
 export const Header = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -24,6 +27,20 @@ export const Header = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+
+  const dispatch = useDispatch()
+  const user = useSelector(selectUser)
+  const navigate = useNavigate()
+  if(user  === null ){
+    navigate("/login");
+  }
+
+  const handleLogout = () => {
+    setAnchorElUser(null);
+    dispatch(setUser(null))
+    navigate("/login");
   };
 
   return (
@@ -57,11 +74,14 @@ export const Header = () => {
         </Typography>
       </Box>
 
-      <Box>
+      <Box sx={{display:"flex", flexDirection:"row", alignItems:"center"}}>
+        <Typography  variant="h6" sx={{color: "#444", marginRight:"10px"}} >
+          Hi, {user.name}
+        </Typography>
         <Button
           variant="outlined"
           startIcon={<SettingsIcon />}
-          endIcon={<Avatar name="Minh Chu" round={true} size="35" />}
+          endIcon={<Avatar name={user.name} round={true} size="35" />}
           sx={{ borderRadius: "30px" }}
           onClick={handleOpenUserMenu}
         />
@@ -89,7 +109,7 @@ export const Header = () => {
             <ListItemText>Profile</ListItemText>
           </MenuItem>
 
-          <MenuItem onClick={handleCloseUserMenu}>
+          <MenuItem onClick={handleLogout}>
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>
