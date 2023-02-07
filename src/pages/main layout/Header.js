@@ -29,9 +29,31 @@ export const Header = () => {
     setAnchorElUser(null);
   };
 
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if(localStorage.getItem('token') === null){
+          navigate("/login");
+        }
+        const response = await fetch(`http://localhost:8080/api/auth`, {
+          method: 'GET',
+          headers: {
+            'Authorization': "Bearer " + localStorage.getItem('token'),
+          }
+        });
+        const json = await response.json();
+        console.log(json);
+        setUser(json);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
+
 
   const dispatch = useDispatch()
-  const user = useSelector(selectUser)
+  const [user, setUser] = React.useState({name:""})
   const navigate = useNavigate()
   if(user  === null ){
     navigate("/login");
@@ -40,6 +62,7 @@ export const Header = () => {
   const handleLogout = () => {
     setAnchorElUser(null);
     dispatch(setUser(null))
+    localStorage.removeItem('token');
     navigate("/login");
   };
 

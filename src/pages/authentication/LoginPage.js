@@ -36,6 +36,7 @@ export default function LoginPage() {
     })
       .then((response) => response.json())
       .then((response) => {
+        localStorage.setItem('token', response.token);
         dispatch(setUser(response))
       })
       .then(() => {
