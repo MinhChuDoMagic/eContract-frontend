@@ -9,6 +9,9 @@ import { ContractHome } from "./pages/contract home/ContractHome";
 import { AddFieldContract } from "./pages/contract/AddFieldcontract";
 import { Envelope } from "./pages/envelopes/envelope";
 import { ContractDetail } from "./pages/contract/ContractDetail";
+import { ViewContract } from "./pages/view contract/ViewContract";
+import { SignContract } from "./pages/sign contract/SignContract";
+import { loader as contactDetailLoader } from "./pages/contract/ContractDetail";
 
 function App() {
   const router = createBrowserRouter([
@@ -25,9 +28,18 @@ function App() {
       element: <SignUp />,
     },
     {
+      path: "/sign",
+      element: <SignContract />
+    },
+    {
+      path: "/read",
+      element: <ViewContract />
+    },
+    {
       path: "/add_field_contract",
       element: <AddFieldContract />,
     },
+    
     {
       path: "/v1",
       element: <MainLayout />,
@@ -47,7 +59,12 @@ function App() {
           element: <Envelope type={"inbox"} />,
         },
         {
+          path: "sent",
+          element: <Envelope type={"sent"} />,
+        },
+        {
           path: "contract/detail/:contractId",
+          loader: contactDetailLoader,
           element: <ContractDetail/>
         }
       ],
