@@ -176,18 +176,15 @@ export const AddFieldContract = () => {
           } else if (annot.custom.type === "SIGNATURE") {
             let userIndex = annot.custom.index;
 
+            const firstText = annot.getContents().split("@")[0];
+            console.log(firstText + Date.now() + index);
+
             updatedArr[userIndex] = Object.assign({}, updatedArr[userIndex], {
-              signField:
-                annot.getContents().replace(/[^\w\s]/gi, "") +
-                Date.now() +
-                index,
+              signField: firstText + Date.now() + index,
             });
             console.log(updatedArr);
             setRecipients(updatedArr);
             // console.log(recipients)
-
-            const firstText  =  annot.getContents().split('@')[0]
-            console.log(firstText + Date.now() + index);
 
             field = new Annotations.Forms.Field(
               firstText + Date.now() + index,
@@ -328,7 +325,7 @@ export const AddFieldContract = () => {
       method: "POST",
       body: formData,
       headers: {
-        Authorization: "Bearer " + localStorage.getItem('token'),
+        Authorization: "Bearer " + localStorage.getItem("token"),
       },
     });
     // docRef.put(blob).then(function (snapshot) {
@@ -442,15 +439,16 @@ export const AddFieldContract = () => {
               label="Recipient"
               onChange={handleChange}
             >
-              {recipients!==null && recipients.map((comp, index) => {
-                if (comp.role === 1) {
-                  return (
-                    <MenuItem key={index} value={index}>
-                      {comp.name}
-                    </MenuItem>
-                  );
-                }
-              })}
+              {recipients !== null &&
+                recipients.map((comp, index) => {
+                  if (comp.role === 1) {
+                    return (
+                      <MenuItem key={index} value={index}>
+                        {comp.name}
+                      </MenuItem>
+                    );
+                  }
+                })}
             </Select>
           </FormControl>
 
